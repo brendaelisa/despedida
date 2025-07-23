@@ -1,26 +1,23 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>¡Gracias por todo, Queridos Misioneros!</title>
-    
-    <link rel="icon" href="data:," /> 
 
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:," />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
     <style>
-        /* Estilos generales y variables con paleta de colores cálidos */
         :root {
-            --color-principal: #A0522D; /* Siena - Un marrón rojizo, muy cálido */
-            --color-secundario: #FFD700; /* Oro - Para un toque de luz y celebración */
-            --color-fondo: #FFF8DC; /* Crema/Beige claro - Suave y acogedor */
-            --color-texto: #4A2B1A; /* Marrón oscuro - Legible y en sintonía */
-            --color-borde-dedicatoria: #E8DCC2; /* Beige más oscuro para bordes */
+            --color-principal: #A0522D;
+            --color-secundario: #FFD700;
+            --color-fondo: #FFF8DC;
+            --color-texto: #4A2B1A;
+            --color-borde-dedicatoria: #E8DCC2;
             --fuente-titulo: 'Playfair Display', serif;
             --fuente-texto: 'Open Sans', sans-serif;
         }
 
-        /* Estilos básicos para el cuerpo de la página */
         body {
             font-family: var(--fuente-texto);
             margin: 0;
@@ -31,7 +28,6 @@
             text-align: center;
         }
 
-        /* Estilos para el encabezado de la página */
         header {
             background-color: var(--color-principal);
             color: white;
@@ -56,49 +52,46 @@
             z-index: 1;
         }
 
-        /* Contenedor principal del carrusel (antes .dedicatorias-container) */
         .carousel-container {
             position: relative;
-            max-width: 600px; /* Ancho máximo del carrusel */
-            margin: 40px auto; /* Centrar y dar espacio vertical */
-            overflow: hidden; /* Oculta las partes de las tarjetas que no están en vista */
+            max-width: 600px;
+            margin: 40px auto;
+            overflow: hidden;
             border-radius: 10px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             background-color: white;
         }
 
-        /* Envoltorio de las dedicatorias para el deslizamiento */
         .dedicatorias-wrapper {
-            display: flex; /* Muestra las tarjetas una al lado de la otra */
-            transition: transform 0.5s ease-in-out; /* Suaviza la transición al deslizar */
+            display: flex;
+            transition: transform 1.5s ease-in-out;
+            /* ancho dinámico se asigna con JS */
         }
 
-        /* Estilo de cada tarjeta individual de dedicatoria */
         .dedicatoria-card {
-            min-width: 100%; /* Cada tarjeta ocupa el 100% del ancho del carrusel */
-            box-sizing: border-box; /* Incluye padding y borde en el ancho total */
-            flex-shrink: 0; /* Evita que las tarjetas se encojan y mantengan su ancho */
+            /* El ancho se asigna dinámicamente con JS */
+            box-sizing: border-box;
+            flex-shrink: 0;
             background-color: white;
             overflow: hidden;
             display: flex;
-            flex-direction: column; /* Apila la imagen y el contenido de texto verticalmente */
+            flex-direction: column;
             border-radius: 10px;
         }
 
         .dedicatoria-card img {
             width: 100%;
-            height: 300px; /* Altura fija para todas las imágenes */
-            object-fit: cover; /* Recorta la imagen para que cubra el área sin distorsionarla */
-            border-bottom: 2px solid var(--color-borde-dedicatoria); /* Borde sutil bajo la imagen */
+            height: 300px;
+            object-fit: cover;
+            border-bottom: 2px solid var(--color-borde-dedicatoria);
         }
 
-        /* Contenido de texto de la dedicatoria */
         .dedicatoria-content {
-            padding: 25px; /* Espacio interno alrededor del texto */
-            flex-grow: 1; /* Permite que este bloque ocupe el espacio restante dentro de la tarjeta */
+            padding: 25px;
+            flex-grow: 1;
             display: flex;
-            flex-direction: column; /* Apila el párrafo y el autor verticalmente */
-            justify-content: space-between; /* Distribuye el espacio para empujar el autor al final */
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .dedicatoria-content p {
@@ -110,58 +103,55 @@
 
         .dedicatoria-content .autor {
             font-weight: 600;
-            color: var(--color-principal); /* El nombre del autor usa el color principal */
+            color: var(--color-principal);
             font-size: 1em;
             text-align: right;
-            margin-top: auto; /* Empuja el autor hacia la parte inferior del bloque de contenido */
+            margin-top: auto;
         }
 
-        /* Estilos para los botones de navegación del carrusel */
         .carousel-button {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background-color: rgba(74, 43, 26, 0.6); /* Marrón oscuro con opacidad */
+            background-color: rgba(74, 43, 26, 0.6);
             color: white;
             border: none;
             padding: 10px 15px;
             cursor: pointer;
             font-size: 1.5em;
             border-radius: 5px;
-            z-index: 10; /* Asegura que los botones estén por encima del carrusel */
+            z-index: 10;
             opacity: 0.8;
             transition: opacity 0.3s ease;
         }
 
         .carousel-button:hover {
-            opacity: 1; /* Aumenta la opacidad al pasar el ratón */
+            opacity: 1;
         }
 
         .carousel-button.prev {
-            left: 10px; /* Posición del botón "anterior" */
+            left: 10px;
         }
 
         .carousel-button.next {
-            right: 10px; /* Posición del botón "siguiente" */
+            right: 10px;
         }
 
-        /* Pie de página */
         footer {
-            background-color: var(--color-texto); /* Color de fondo del pie de página */
+            background-color: var(--color-texto);
             color: white;
             padding: 20px;
             margin-top: 40px;
             font-size: 0.9em;
         }
 
-        /* Media queries para hacer la página responsiva en diferentes tamaños de pantalla */
         @media (max-width: 768px) {
             header h1 {
                 font-size: 2.5em;
             }
-            .carousel-container { /* Ajuste en el contenedor del carrusel para móvil */
+            .carousel-container {
                 margin: 20px auto;
-                max-width: 90%; 
+                max-width: 90%;
             }
             .dedicatoria-card img {
                 height: 250px;
@@ -197,59 +187,84 @@
     <div class="carousel-container">
         <div class="dedicatorias-wrapper">
             <div class="dedicatoria-card">
-                <img src="https://via.placeholder.com/600x300/A0522D/FFFFFF?text=Foto+1" alt="Foto de los misioneros o un recuerdo">
+                <img src="https://via.placeholder.com/600x300/A0522D/FFFFFF?text=Foto+1" alt="Foto de los misioneros o un recuerdo" />
                 <div class="dedicatoria-content">
                     <p>"Queridos hermanos, su dedicación y amor nos inspiraron profundamente. Los extrañaremos mucho, pero celebramos su regreso a casa con el corazón lleno de alegría y agradecimiento por su servicio."</p>
-                    <span class="autor">- Familia Martínez</span>
+                    <span class="autor">- Familia </span>
                 </div>
             </div>
 
             <div class="dedicatoria-card">
-                <img src="https://via.placeholder.com/600x300/FFD700/4A2B1A?text=Foto+2" alt="Foto de los misioneros en acción">
+                <img src="https://via.placeholder.com/600x300/FFD700/4A2B1A?text=Foto+2" alt="Foto de los misioneros en acción" />
                 <div class="dedicatoria-content">
                     <p>"Cada enseñanza, cada sonrisa, cada momento compartido quedará grabado en nuestra memoria. Han sido una luz en nuestro camino. ¡Que Dios los bendiga siempre en su nueva etapa!"</p>
-                    <span class="autor">- Sofía, Grupo de Jóvenes</span>
+                    <span class="autor">- Hermano </span>
                 </div>
             </div>
 
             <div class="dedicatoria-card">
-                <img src="https://via.placeholder.com/600x300/6A0DAD/FFFFFF?text=Foto+3" alt="Foto grupal o de la comunidad">
+                <img src="https://via.placeholder.com/600x300/6A0DAD/FFFFFF?text=Foto+3" alt="Foto grupal o de la comunidad" />
                 <div class="dedicatoria-content">
                     <p>"Su trabajo aquí ha sido invaluable. Nos han mostrado el verdadero significado del servicio y la entrega. ¡Esperamos verlos pronto y les deseamos un feliz reencuentro con sus seres queridos!"</p>
-                    <span class="autor">- La Comunidad de Fe</span>
+                    <span class="autor">- Hna </span>
                 </div>
             </div>
 
             <div class="dedicatoria-card">
-                <img src="https://via.placeholder.com/600x300/8B4513/FFFFFF?text=Foto+4" alt="Otra foto de los misioneros">
+                <img src="https://via.placeholder.com/600x300/8B4513/FFFFFF?text=Foto+4" alt="Otra foto de los misioneros" />
                 <div class="dedicatoria-content">
                     <p>"Su ejemplo de fe y perseverancia ha dejado una huella imborrable en cada uno de nosotros. Les deseamos lo mejor en su próximo capítulo. ¡Siempre estarán en nuestras oraciones!"</p>
-                    <span class="autor">- Hermanos López</span>
+                    <span class="autor">- Hermanos </span>
                 </div>
             </div>
 
             <div class="dedicatoria-card">
-                <img src="https://via.placeholder.com/600x300/CD853F/4A2B1A?text=Foto+5" alt="Foto de un lugar significativo">
+                <img src="https://via.placeholder.com/600x300/CD853F/4A2B1A?text=Foto+5" alt="Foto de un lugar significativo" />
                 <div class="dedicatoria-content">
                     <p>"Recordamos con cariño todos los momentos de alegría y crecimiento que vivimos a su lado. Su partida nos entristece, pero su legado permanece. ¡Gracias por tanto!"</p>
-                    <span class="autor">- Equipo de Voluntarios</span>
+                    <span class="autor">- Hombres y Mujeres Jovenes</span>
                 </div>
             </div>
 
             <div class="dedicatoria-card">
-                <img src="https://via.placeholder.com/600x300/B0C4DE/4A2B1A?text=Foto+6" alt="Foto sonriendo">
+                <img src="https://via.placeholder.com/600x300/B0C4DE/4A2B1A?text=Foto+6" alt="Foto sonriendo" />
                 <div class="dedicatoria-content">
                     <p>"Con el corazón lleno de gratitud, les decimos hasta pronto. Han sido verdaderos siervos de Dios y amigos fieles. Que el Señor los guíe y proteja en todo momento."</p>
-                    <span class="autor">- Pastor y Congregación</span>
+                    <span class="autor">- Congregación</span>
                 </div>
             </div>
 
+            <div class="dedicatoria-card">
+                <img src="https://via.placeholder.com/600x300/DEB887/4A2B1A?text=Foto+7" alt="Foto de misión o comunidad" />
+                <div class="dedicatoria-content">
+                    <p>"Su entrega y sacrificio han sido un faro de esperanza. Llevaremos siempre sus enseñanzas en nuestro corazón. ¡Un fuerte abrazo, los queremos!"</p>
+                    <span class="autor">- Familia Torres</span>
+                </div>
+            </div>
+
+            <div class="dedicatoria-card">
+                <img src="https://via.placeholder.com/600x300/DAA520/FFFFFF?text=Foto+8" alt="Foto de reunión" />
+                <div class="dedicatoria-content">
+                    <p>"Gracias por cada oración, cada palabra de aliento y por compartir su fe con tanta pasión. ¡Su impacto es eterno! Que tengan un viaje seguro y un feliz reencuentro."</p>
+                    <span class="autor">- Los Niños de la Primaria</span>
+                </div>
+            </div>
+
+            <div class="dedicatoria-card">
+                <img src="https://via.placeholder.com/600x300/F4A460/4A2B1A?text=Foto+9" alt="Foto celebrando" />
+                <div class="dedicatoria-content">
+                    <p>"Han sembrado amor y esperanza en cada rincón. Su legado vivirá en nosotros. ¡Les deseamos lo mejor en esta nueva etapa y que Dios los siga usando poderosamente!"</p>
+                    <span class="autor">- Tus Hermanos en Cristo</span>
+                </div>
+            </div>
         </div>
 
-        <button class="carousel-button prev" onclick="moveCarousel(-1)">&#10094;</button> <button class="carousel-button next" onclick="moveCarousel(1)">&#10095;</button> </div>
+        <button class="carousel-button prev" onclick="moveCarousel(-1)">&#10094;</button>
+        <button class="carousel-button next" onclick="moveCarousel(1)">&#10095;</button>
+    </div>
 
     <footer>
-        <p>&copy; 2025 Un Cariño para Nuestros Misioneros. Creado con amor.</p>
+        <p>&copy; 2025 Un Cariño para Nuestros Misioneros. Creado con amor.Rama 25 de Mayo</p>
     </footer>
 
     <script>
@@ -258,30 +273,31 @@
         let currentIndex = 0;
         const totalCards = cards.length;
 
-        // Función para mover el carrusel a la tarjeta anterior o siguiente
+        // Ajustamos el ancho total del wrapper y ancho de cada tarjeta
+        wrapper.style.width = `${totalCards * 100}%`;
+        cards.forEach(card => {
+            card.style.width = `${100 / totalCards}%`;
+        });
+
         function moveCarousel(direction) {
             currentIndex += direction;
 
-            // Lógica para volver al principio o al final si se excede el índice
             if (currentIndex >= totalCards) {
-                currentIndex = 0; // Si llega al final, vuelve a la primera tarjeta
+                currentIndex = 0;
             } else if (currentIndex < 0) {
-                currentIndex = totalCards - 1; // Si va antes de la primera, va a la última
+                currentIndex = totalCards - 1;
             }
 
-            // Calcula el desplazamiento horizontal necesario para mostrar la tarjeta actual
-            const offset = -currentIndex * 100; // Cada tarjeta ocupa el 100% del ancho
-            wrapper.style.transform = `translateX(${offset}%)`; // Aplica el desplazamiento
+            const offset = -(currentIndex * (100 / totalCards));
+            wrapper.style.transform = `translateX(${offset}%)`;
         }
 
-        // Función para iniciar el deslizamiento automático del carrusel
         function startAutoSlide() {
             setInterval(() => {
-                moveCarousel(1); // Mueve automáticamente a la siguiente tarjeta
-            }, 5000); // Cambia cada 5 segundos (5000 milisegundos)
+                moveCarousel(1);
+            }, 5000);
         }
 
-        // Inicia el deslizamiento automático cuando la página se carga
         startAutoSlide();
     </script>
 </body>
