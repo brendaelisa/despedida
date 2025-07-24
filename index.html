@@ -56,24 +56,70 @@
             font-size: 2rem;
             font-weight: 700;
         }
-        .galeria {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            justify-content: center;
-            margin-top: 2rem;
+        /* --- Estilos para el carrusel de galería --- */
+        .galeria-container {
+            position: relative;
+            max-width: 100%; /* Para controlar el ancho del contenedor del carrusel */
+            margin: 2rem auto;
+            overflow: hidden; /* Oculta las imágenes que no están en la vista */
+            border-radius: 12px; /* Coincide con el radio de la sección */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08); /* Coincide con la sombra de la sección */
         }
-        .galeria img {
-            width: 220px;
-            height: 180px; /* Ajustado para un aspecto más uniforme */
-            object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
+
+        .galeria-inner {
+            display: flex;
+            transition: transform 0.5s ease-in-out; /* Transición suave para el deslizamiento */
+        }
+
+        .galeria-item {
+            min-width: calc(100% / 3); /* 3 imágenes por vista en pantallas grandes */
+            box-sizing: border-box; /* Incluye padding y borde en el ancho */
+            padding: 1rem; /* Espaciado entre imágenes */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .galeria-item img {
+            width: 100%; /* Hace que la imagen ocupe el 100% del item */
+            height: 180px; /* Altura fija para todas las imágenes */
+            object-fit: cover;
             border-radius: 10px;
             box-shadow: 0 6px 12px rgba(0,0,0,0.2);
             transition: transform 0.3s ease;
         }
-        .galeria img:hover {
+
+        .galeria-item img:hover {
             transform: translateY(-5px);
         }
+
+        .galeria-nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(90, 128, 162, 0.7); /* primary-color con transparencia */
+            color: var(--light-text-color);
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            border-radius: 50%;
+            z-index: 10; /* Asegura que los botones estén por encima de las imágenes */
+            transition: background-color 0.3s ease;
+        }
+
+        .galeria-nav-button:hover {
+            background-color: var(--primary-color);
+        }
+
+        .galeria-nav-button.prev {
+            left: 10px;
+        }
+
+        .galeria-nav-button.next {
+            right: 10px;
+        }
+
         .mensajes blockquote {
             background-color: var(--secondary-color);
             border-left: 6px solid var(--accent-color);
@@ -114,8 +160,10 @@
             h2 {
                 font-size: 1.7rem;
             }
-            .galeria img {
-                width: 180px;
+            .galeria-item {
+                min-width: calc(100% / 2); /* 2 imágenes por vista en tablets */
+            }
+            .galeria-item img {
                 height: 150px;
             }
         }
@@ -129,8 +177,10 @@
             h2 {
                 font-size: 1.5rem;
             }
-            .galeria img {
-                width: 100%; /* Las imágenes ocupan todo el ancho en pantallas pequeñas */
+            .galeria-item {
+                min-width: 100%; /* 1 imagen por vista en móviles */
+            }
+            .galeria-item img {
                 height: auto;
             }
         }
@@ -149,17 +199,29 @@
 
     <section>
         <h2>🌟 Un hasta pronto</h2>
-        <p>Gracias Elder y Sister [Apellido] por su amor, su fe, su servicio y su ejemplo. Esta página es un pequeño recuerdo de todo lo que dejaron en nuestros corazones, con la esperanza y la fe de que **pronto nos volveremos a encontrar**.</p>
+        <p>Gracias Elder y Hermana Bishop por su amor, su fe, su servicio y su ejemplo. Esta página es un pequeño recuerdo de todo lo que dejaron en nuestros corazones, con la esperanza y la fe de que pronto nos volveremos a encontrar.</p>
     </section>
 
     <section>
         <h2>📸 Galería de Fotos</h2>
-        <div class="galeria">
-            <img src="foto1.jpg" alt="Foto 1" />
-            <img src="foto2.jpg" alt="Foto 2" />
-            <img src="foto3.jpg" alt="Foto 3" />
-            <img src="foto4.jpg" alt="Foto 4" />
+        <div class="galeria-container">
+            <div class="galeria-inner" id="galeriaInner">
+                <div class="galeria-item"><img src="images/1.jpg" alt="Foto 1" /></div>
+                <div class="galeria-item"><img src="images/2.jpg" alt="Foto 2" /></div>
+                <div class="galeria-item"><img src="images/3.jpg" alt="Foto 3" /></div>
+                <div class="galeria-item"><img src="images/4.jpg" alt="Foto 4" /></div>
+                <div class="galeria-item"><img src="images/5.jpg" alt="Foto 5" /></div>
+                <div class="galeria-item"><img src="images/6.jpg" alt="Foto 6" /></div>
+                <div class="galeria-item"><img src="images/7.jpg" alt="Foto 7" /></div>
+                <div class="galeria-item"><img src="images/8.jpg" alt="Foto 8" /></div>
+                <div class="galeria-item"><img src="images/9.jpg" alt="Foto 9" /></div>
+                <div class="galeria-item"><img src="images/10.jpg" alt="Foto 10" /></div>
+                <div class="galeria-item"><img src="images/11.jpg" alt="Foto 11" /></div>
+                <div class="galeria-item"><img src="images/12.jpg" alt="Foto 12" /></div>
             </div>
+            <button class="galeria-nav-button prev" id="prevBtn">❮</button>
+            <button class="galeria-nav-button next" id="nextBtn">❯</button>
+        </div>
     </section>
 
     <section class="mensajes">
@@ -172,37 +234,152 @@
         <p><em>Con la fe inquebrantable en que los lazos forjados en el servicio del Señor son eternos, anhelamos el día en que nuestros caminos se crucen de nuevo. Así como Él nos prometió: "Mas la senda de los justos es como la luz de la aurora, Que va en aumento hasta que el día es perfecto." – Proverbios 4:18. Que esta luz nos guíe hasta nuestro próximo "hola".</em></p>
     </section>
     <footer>
-        <p>Con amor, su familia en la fe ❤️</p>
+        <p>Con amor, su familia en la fe ❤️Rama 25 de Mayo</p>
     </footer>
 
     <script>
-      const mensajes = [
-        `<strong>Macarena Castro y Gladys Delgado:</strong><br>
-        En estos tiempos que corren, siempre es bueno ser agradecido y en este caso a los Hermanos Bishop por tan grande labor de prestar sus servicios en la Rama de 25 de Mayo y principalmente con respecto a nosotras. Solo me cabe decir gracias a nuestro Padre Celestial por enviarnos tan bellas personas y que los bendiga como matrimonio, familia y especialmente como sus mensajeros del Evangelio de Jesucristo. Que la humildad y el amor que los caracteriza sean la luz para seguir adelante en nuestras vidas.<br>
-        Se les quiere mucho ❤️ y los vamos a extrañar. Dios los siga bendiciendo. Gracias, gracias.`,
+        // Script para los mensajes de agradecimiento
+        const mensajes = [
+            `<strong>Macarena Castro y Gladys Delgado:</strong><br>
+            En estos tiempos que corren, siempre es bueno ser agradecido y en este caso a los Hermanos Bishop por tan grande labor de prestar sus servicios en la Rama de 25 de Mayo y principalmente con respecto a nosotras. Solo me cabe decir gracias a nuestro Padre Celestial por enviarnos tan bellas personas y que los bendiga como matrimonio, familia y especialmente como sus mensajeros del Evangelio de Jesucristo. Que la humildad y el amor que los caracteriza sean la luz para seguir adelante en nuestras vidas.<br>
+            Se les quiere mucho ❤️ y los vamos a extrañar. Dios los siga bendiciendo. Gracias, gracias.`,
 
-        `<strong>Eliana:</strong><br>
-        Muchas gracias por todo su amor y compromiso a su misión. Hoy llegó el día que muchos no queríamos que llegara, pero llegó. Gracias por todo lo que han hecho por nosotros. Por siempre estarán en nuestros corazones. Esto no es una despedida, es un “nos vemos pronto”, familia Bishop. Buen regreso a casa, les amamos y les agradezco por todo.`,
+            `<strong>Eliana:</strong><br>
+            Muchas gracias por todo su amor y compromiso a su misión. Hoy llegó el día que muchos no queríamos que llegara, pero llegó. Gracias por todo lo que han hecho por nosotros. Por siempre estarán en nuestros corazones. Esto no es una despedida, es un “nos vemos pronto”, familia Bishop. Buen regreso a casa, les amamos y les agradezco por todo.`,
 
-        `<strong>Ricardo Toledo:</strong><br>
-        Hermanos Bishop, quisiera un intelecto para escribir las frases más hermosas, pero solamente me nace un agradecimiento al Señor por haber puesto en mi camino a los hnos. Bishop. Criaturas elegidas por nuestro Padre Celestial, con una misión noble. Sus miradas vierten amor y esperanza. Siempre los recordaré, hnos. Les pido disculpas si en algún momento no pude atenderlos. Sé que el Señor siempre va a estar a su lado. ¡Los recordaré siempre!`
-      ];
+            `<strong>Ricardo Toledo:</strong><br>
+            Hermanos Bishop, quisiera un intelecto para escribir las frases más hermosas, pero solamente me nace un agradecimiento al Señor por haber puesto en mi camino a los hnos. Bishop. Criaturas elegidas por nuestro Padre Celestial, con una misión noble. Sus miradas vierten amor y esperanza. Siempre los recordaré, hnos. Les pido disculpas si en algún momento no pude atenderlos. Sé que el Señor siempre va a estar a su lado. ¡Los recordaré siempre!`
+        ];
 
-      let indice = 0;
-      const contenedor = document.getElementById('mensaje-actual');
+        let indiceMensaje = 0;
+        const contenedorMensaje = document.getElementById('mensaje-actual');
+        let intervaloMensajes; // Variable para guardar el ID del intervalo
+        let estaPausado = false; // Estado para saber si está pausado o no
 
-      function mostrarMensaje() {
-        contenedor.style.opacity = 0; // animar salida
+        function mostrarMensaje() {
+            contenedorMensaje.style.opacity = 0; // animar salida
 
-        setTimeout(() => {
-          contenedor.innerHTML = mensajes[indice];
-          contenedor.style.opacity = 1; // animar entrada
-          indice = (indice + 1) % mensajes.length;
-        }, 1000);
-      }
+            setTimeout(() => {
+                contenedorMensaje.innerHTML = mensajes[indiceMensaje];
+                contenedorMensaje.style.opacity = 1; // animar entrada
+                indiceMensaje = (indiceMensaje + 1) % mensajes.length;
+            }, 1000);
+        }
 
-      mostrarMensaje();
-      setInterval(mostrarMensaje, 6000);
+        function iniciarCambioMensajes() {
+            clearInterval(intervaloMensajes); // Limpia cualquier intervalo anterior
+            intervaloMensajes = setInterval(mostrarMensaje, 10000); // CAMBIADO A 10 SEGUNDOS
+            estaPausado = false; // Actualiza el estado
+        }
+
+        function pausarCambioMensajes() {
+            clearInterval(intervaloMensajes); // Detiene el cambio automático
+            estaPausado = true; // Actualiza el estado
+        }
+
+        // Manejar clic/toque en el contenedor de mensajes
+        contenedorMensaje.addEventListener('click', () => {
+            if (estaPausado) {
+                // Si estaba pausado, reanudar
+                mostrarMensaje(); // Muestra el siguiente mensaje inmediatamente al reanudar
+                iniciarCambioMensajes(); 
+            } else {
+                // Si estaba activo, pausar
+                pausarCambioMensajes(); 
+            }
+        });
+
+        // Iniciar el cambio de mensajes automáticamente al cargar la página
+        mostrarMensaje(); // Muestra el primer mensaje inmediatamente
+        iniciarCambioMensajes(); // Inicia el intervalo para los siguientes
+
+
+        // --- Script para el carrusel de la galería ---
+        const galeriaInner = document.getElementById('galeriaInner');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const items = Array.from(document.querySelectorAll('.galeria-item')); 
+
+        let currentIndex = 0;
+        let itemsPerPage = getItemsPerPage(); 
+        const originalTotalItems = items.length; 
+
+        function getItemsPerPage() {
+            if (window.innerWidth <= 480) {
+                return 1; 
+            } else if (window.innerWidth <= 768) {
+                return 2; 
+            } else {
+                return 3; 
+            }
+        }
+
+        function setupInfiniteCarousel() {
+            const existingClones = galeriaInner.querySelectorAll('.clone');
+            existingClones.forEach(clone => clone.remove());
+
+            // Clonar ítems del final y añadirlos al principio
+            for (let i = 0; i < itemsPerPage; i++) {
+                const clone = items[originalTotalItems - 1 - i].cloneNode(true);
+                clone.classList.add('clone');
+                galeriaInner.prepend(clone);
+            }
+
+            // Clonar ítems del principio y añadirlos al final
+            for (let i = 0; i < itemsPerPage; i++) {
+                const clone = items[i].cloneNode(true);
+                clone.classList.add('clone');
+                galeriaInner.appendChild(clone);
+            }
+
+            currentIndex = itemsPerPage; 
+            updateCarousel(false); 
+        }
+
+        window.addEventListener('resize', () => {
+            const newItemsPerPage = getItemsPerPage();
+            if (newItemsPerPage !== itemsPerPage) {
+                itemsPerPage = newItemsPerPage;
+                setupInfiniteCarousel(); 
+            }
+        });
+
+        function updateCarousel(smoothTransition = true) {
+            if (!smoothTransition) {
+                galeriaInner.style.transition = 'none'; 
+            } else {
+                galeriaInner.style.transition = 'transform 0.5s ease-in-out'; 
+            }
+
+            const itemWidth = galeriaInner.querySelector('.galeria-item').offsetWidth;
+            galeriaInner.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+
+            if (smoothTransition) {
+                if (currentIndex >= originalTotalItems + itemsPerPage) {
+                    setTimeout(() => {
+                        currentIndex = itemsPerPage; 
+                        updateCarousel(false);
+                    }, 500); 
+                } else if (currentIndex < itemsPerPage) {
+                    setTimeout(() => {
+                        currentIndex = originalTotalItems + currentIndex; 
+                        updateCarousel(false);
+                    }, 500); 
+                }
+            }
+        }
+
+        prevBtn.addEventListener('click', () => {
+            currentIndex--;
+            updateCarousel();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentIndex++;
+            updateCarousel();
+        });
+
+        setupInfiniteCarousel();
     </script>
 </body>
 </html>
