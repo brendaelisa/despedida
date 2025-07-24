@@ -30,6 +30,7 @@
             padding: 2.5rem 2rem;
             text-align: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: relative; /* Importante para posicionar el botón dentro */
         }
         header h1 {
             font-family: 'Playfair Display', serif;
@@ -40,6 +41,21 @@
         header p {
             font-size: 1.1rem;
             margin-top: 0.5rem;
+        }
+        /* Estilo para el botón de música en el encabezado */
+        header #playMusicBtn {
+            position: absolute; /* Permite posicionarlo con top/right/left */
+            top: 15px; /* Separación desde arriba */
+            right: 15px; /* Separación desde la derecha */
+            padding: 10px 15px;
+            background-color: var(--accent-color);
+            color: var(--light-text-color);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            z-index: 1000; /* Asegura que esté por encima de otros elementos */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra sutil para destacarlo */
         }
         section {
             padding: 2rem;
@@ -83,7 +99,7 @@
         .galeria-item img {
             width: 100%; /* Hace que la imagen ocupe el 100% del item */
             height: 180px; /* Altura fija para todas las imágenes */
-            object-fit: contain;
+            object-fit: cover; /* Mantiene la proporción, cubriendo el área y recortando si es necesario */
             border-radius: 10px;
             box-shadow: 0 6px 12px rgba(0,0,0,0.2);
             transition: transform 0.3s ease;
@@ -166,6 +182,13 @@
             .galeria-item img {
                 height: 150px;
             }
+            /* Ajuste del botón en móviles para que no se superponga */
+            header #playMusicBtn {
+                top: 10px; /* Un poco menos desde arriba */
+                right: 10px; /* Un poco menos desde la derecha */
+                font-size: 0.8rem; /* Tamaño de fuente más pequeño */
+                padding: 8px 12px; /* Padding más pequeño */
+            }
         }
         @media (max-width: 480px) {
             header h1 {
@@ -183,23 +206,30 @@
             .galeria-item img {
                 height: auto;
             }
+             header #playMusicBtn {
+                top: 8px; 
+                right: 8px; 
+                font-size: 0.7rem; 
+                padding: 6px 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <audio autoplay loop hidden>
-        <source src="musica.mp3" type="audio/mpeg" />
+    <audio id="miMusica" loop hidden>
+        <source src="audio/1006 - En tu corazón entona una canción.mp3" type="audio/mpeg" />
         Tu navegador no soporta audio HTML5.
     </audio>
 
     <header>
         <h1>Gracias, Queridos Misioneros</h1>
         <p>Una misión de amor que nunca olvidaremos</p>
+        <button id="playMusicBtn" style="display: block;">Reproducir Música</button>
     </header>
 
     <section>
         <h2>🌟 Un hasta pronto</h2>
-        <p>Gracias Elder y Hermana Bishop por su amor, su fe, su servicio y su ejemplo. Esta página es un pequeño recuerdo de todo lo que dejaron en nuestros corazones, con la esperanza y la fe de que **pronto nos volveremos a encontrar**.</p>
+        <p>Gracias Elder y Hermana Bishop por su amor, su fe, su servicio y su ejemplo. Esta página es un pequeño recuerdo de todo lo que dejaron en nuestros corazones, con la esperanza y la fe de que pronto nos volveremos a encontrar.</p>
     </section>
 
     <section>
@@ -278,7 +308,7 @@
                 contenedorMensaje.innerHTML = mensajes[indiceMensaje];
                 contenedorMensaje.style.opacity = 1; // animar entrada
                 indiceMensaje = (indiceMensaje + 1) % mensajes.length;
-            }, 1000);
+            }, 1000); // 1 segundo para la transición de fade
         }
 
         function iniciarCambioMensajes() {
@@ -322,6 +352,10 @@
 
         // --- Event Listener para el TOGGLE de pausa/reanudación PERMANENTE (click) ---
         contenedorMensaje.addEventListener('click', () => {
+            // Si el mensaje está siendo actualmente presionado por el usuario (mousedown/touchstart),
+            // el evento 'click' no debe dispararse como un toggle de pausa permanente.
+            if (estaPresionado) return; 
+
             if (estaPausadoPorClick) {
                 // Si estaba pausado permanentemente, reanudar
                 estaPausadoPorClick = false;
@@ -339,6 +373,40 @@
         iniciarCambioMensajes(); // Inicia el intervalo para los cambios automáticos
 
 
+        // --- Script para controlar la música ---
+        const miMusica = document.getElementById('miMusica');
+        const playMusicBtn = document.getElementById('playMusicBtn');
+
+        // Función para intentar reproducir la música
+        function intentarReproducirMusica() {
+            // Intentar reproducir la música
+            miMusica.play().then(() => {
+                // La reproducción automática fue exitosa, ocultar el botón
+                playMusicBtn.style.display = 'none'; 
+            }).catch(error => {
+                // La reproducción automática fue bloqueada, mostrar el botón
+                console.log("La reproducción automática de la música fue bloqueada por el navegador. El usuario debe iniciarla.", error);
+                playMusicBtn.style.display = 'block'; 
+            });
+        }
+
+        // Event listener para el botón de música
+        playMusicBtn.addEventListener('click', () => {
+            if (miMusica.paused) {
+                miMusica.play().catch(error => {
+                    console.log("Error al intentar reproducir la música con el botón:", error);
+                });
+                playMusicBtn.textContent = "Pausar Música";
+            } else {
+                miMusica.pause();
+                playMusicBtn.textContent = "Reproducir Música";
+            }
+        });
+
+        // Intentar reproducir la música al cargar la página
+        document.addEventListener('DOMContentLoaded', intentarReproducirMusica);
+
+
         // --- Script para el carrusel de la galería ---
         const galeriaInner = document.getElementById('galeriaInner');
         const prevBtn = document.getElementById('prevBtn');
@@ -347,7 +415,7 @@
 
         let currentIndex = 0;
         let itemsPerPage = getItemsPerPage(); 
-        const originalTotalItems = items.length; // ¡AHORA CON MÁS IMÁGENES!
+        const originalTotalItems = items.length; 
 
         function getItemsPerPage() {
             if (window.innerWidth <= 480) {
@@ -365,7 +433,6 @@
 
             // Clonar ítems del final y añadirlos al principio
             for (let i = 0; i < itemsPerPage; i++) {
-                // Asegurarse de que el índice no exceda el límite de originalTotalItems
                 const cloneIndex = (originalTotalItems - 1 - i + originalTotalItems) % originalTotalItems;
                 const clone = items[cloneIndex].cloneNode(true);
                 clone.classList.add('clone');
