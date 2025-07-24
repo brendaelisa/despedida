@@ -83,7 +83,7 @@
         .galeria-item img {
             width: 100%; /* Hace que la imagen ocupe el 100% del item */
             height: 180px; /* Altura fija para todas las imágenes */
-            object-fit: cover;
+            object-fit: contain;
             border-radius: 10px;
             box-shadow: 0 6px 12px rgba(0,0,0,0.2);
             transition: transform 0.3s ease;
@@ -199,7 +199,7 @@
 
     <section>
         <h2>🌟 Un hasta pronto</h2>
-        <p>Gracias Elder y Hermana Bishop por su amor, su fe, su servicio y su ejemplo. Esta página es un pequeño recuerdo de todo lo que dejaron en nuestros corazones, con la esperanza y la fe de que pronto nos volveremos a encontrar.</p>
+        <p>Gracias Elder y Hermana Bishop por su amor, su fe, su servicio y su ejemplo. Esta página es un pequeño recuerdo de todo lo que dejaron en nuestros corazones, con la esperanza y la fe de que **pronto nos volveremos a encontrar**.</p>
     </section>
 
     <section>
@@ -218,6 +218,11 @@
                 <div class="galeria-item"><img src="images/10.jpg" alt="Foto 10" /></div>
                 <div class="galeria-item"><img src="images/11.jpg" alt="Foto 11" /></div>
                 <div class="galeria-item"><img src="images/12.jpg" alt="Foto 12" /></div>
+                <div class="galeria-item"><img src="images/13.jpg" alt="Foto 13" /></div>
+                <div class="galeria-item"><img src="images/14.jpg" alt="Foto 14" /></div>
+                <div class="galeria-item"><img src="images/15.jpg" alt="Foto 15" /></div>
+                <div class="galeria-item"><img src="images/16.jpg" alt="Foto 16" /></div>
+                <div class="galeria-item"><img src="images/17.jpg" alt="Foto 17" /></div>
             </div>
             <button class="galeria-nav-button prev" id="prevBtn">❮</button>
             <button class="galeria-nav-button next" id="nextBtn">❯</button>
@@ -248,15 +253,25 @@
             Muchas gracias por todo su amor y compromiso a su misión. Hoy llegó el día que muchos no queríamos que llegara, pero llegó. Gracias por todo lo que han hecho por nosotros. Por siempre estarán en nuestros corazones. Esto no es una despedida, es un “nos vemos pronto”, familia Bishop. Buen regreso a casa, les amamos y les agradezco por todo.`,
 
             `<strong>Ricardo Toledo:</strong><br>
-            Hermanos Bishop, quisiera un intelecto para escribir las frases más hermosas, pero solamente me nace un agradecimiento al Señor por haber puesto en mi camino a los hnos. Bishop. Criaturas elegidas por nuestro Padre Celestial, con una misión noble. Sus miradas vierten amor y esperanza. Siempre los recordaré, hnos. Les pido disculpas si en algún momento no pude atenderlos. Sé que el Señor siempre va a estar a su lado. ¡Los recordaré siempre!`
+            Hermanos Bishop, quisiera un intelecto para escribir las frases más hermosas, pero solamente me nace un agradecimiento al Señor por haber puesto en mi camino a los hnos. Bishop. Criaturas elegidas por nuestro Padre Celestial, con una misión noble. Sus miradas vierten amor y esperanza. Siempre los recordaré, hnos. Les pido disculpas si en algún momento no pude atenderlos. Sé que el Señor siempre va a estar a su lado. ¡Los recordaré siempre!`,
+            
+            `<strong>Familia Cobello:</strong><br>
+            ¡Qué privilegio para nosotros haberlos tenido en nuestra Rama! Los amamos y agradecemos su amor y trabajo. Estarán por siempre en nuestro corazón. Deseo que el Señor los bendiga cumpliéndole los buenos deseos de sus corazones. ¡Buen regreso a casa! ❤️`,
+            
+            `<strong>Ana Castege:</strong><br>
+            Si había dudas que N.P.C. (Nuestro Padre Celestial) está preocupado por esta pequeña rama, fue una certeza que nos ama y se preocupa por nosotros. Mandó dos seres hermosos en humildad, conocimiento y amor. Por siempre estarán en mi corazón como ejemplo de hermandad con mucho amor.`
         ];
 
         let indiceMensaje = 0;
         const contenedorMensaje = document.getElementById('mensaje-actual');
         let intervaloMensajes; // Variable para guardar el ID del intervalo
-        let estaPausado = false; // Estado para saber si está pausado o no
+        let estaPausadoPorClick = false; // Estado para indicar si el usuario lo pausó explícitamente con un click/toque rápido
+        let estaPresionado = false; // Estado para indicar si el usuario está actualmente manteniendo presionado el mouse o el dedo
 
         function mostrarMensaje() {
+            // Solo cambia el mensaje si NO está presionado y NO está pausado por un click/toque explícito
+            if (estaPresionado || estaPausadoPorClick) return; 
+
             contenedorMensaje.style.opacity = 0; // animar salida
 
             setTimeout(() => {
@@ -268,30 +283,60 @@
 
         function iniciarCambioMensajes() {
             clearInterval(intervaloMensajes); // Limpia cualquier intervalo anterior
-            intervaloMensajes = setInterval(mostrarMensaje, 10000); // CAMBIADO A 10 SEGUNDOS
-            estaPausado = false; // Actualiza el estado
+            // Solo inicia el intervalo si no está explícitamente pausado por el usuario
+            if (!estaPausadoPorClick) { 
+                intervaloMensajes = setInterval(mostrarMensaje, 10000); // 10 segundos
+            }
         }
 
-        function pausarCambioMensajes() {
+        function detenerCambioMensajes() {
             clearInterval(intervaloMensajes); // Detiene el cambio automático
-            estaPausado = true; // Actualiza el estado
         }
 
-        // Manejar clic/toque en el contenedor de mensajes
-        contenedorMensaje.addEventListener('click', () => {
-            if (estaPausado) {
-                // Si estaba pausado, reanudar
-                mostrarMensaje(); // Muestra el siguiente mensaje inmediatamente al reanudar
-                iniciarCambioMensajes(); 
-            } else {
-                // Si estaba activo, pausar
-                pausarCambioMensajes(); 
+        // --- Event Listeners para la pausa temporal al PRESIONAR (mousedown/touchstart) ---
+        contenedorMensaje.addEventListener('mousedown', () => {
+            estaPresionado = true; // Marca que está siendo presionado
+            detenerCambioMensajes(); // Pausa el carrusel de mensajes
+        });
+        contenedorMensaje.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Previene el zoom en móviles y asegura que solo se dispare este evento
+            estaPresionado = true; // Marca que está siendo presionado
+            detenerCambioMensajes(); // Pausa el carrusel de mensajes
+        }, { passive: false }); // Usar { passive: false } para permitir preventDefault en touchstart
+
+        // --- Event Listeners para la reanudación al SOLTAR (mouseup/touchend) ---
+        contenedorMensaje.addEventListener('mouseup', () => {
+            estaPresionado = false; // Ya no está siendo presionado
+            // Si NO está pausado permanentemente por un click/toque explícito, reanuda el cambio automático
+            if (!estaPausadoPorClick) {
+                iniciarCambioMensajes();
+            }
+        });
+        contenedorMensaje.addEventListener('touchend', () => {
+            estaPresionado = false; // Ya no está siendo presionado
+            // Si NO está pausado permanentemente por un click/toque explícito, reanuda el cambio automático
+            if (!estaPausadoPorClick) {
+                iniciarCambioMensajes();
             }
         });
 
-        // Iniciar el cambio de mensajes automáticamente al cargar la página
+        // --- Event Listener para el TOGGLE de pausa/reanudación PERMANENTE (click) ---
+        contenedorMensaje.addEventListener('click', () => {
+            if (estaPausadoPorClick) {
+                // Si estaba pausado permanentemente, reanudar
+                estaPausadoPorClick = false;
+                mostrarMensaje(); // Muestra el siguiente mensaje inmediatamente al reanudar
+                iniciarCambioMensajes(); // Reinicia el intervalo para el cambio automático
+            } else {
+                // Si no estaba pausado permanentemente, pausar permanentemente
+                estaPausadoPorClick = true;
+                detenerCambioMensajes(); // Detiene el cambio automático
+            }
+        });
+
+        // Inicializar el carrusel de mensajes
         mostrarMensaje(); // Muestra el primer mensaje inmediatamente
-        iniciarCambioMensajes(); // Inicia el intervalo para los siguientes
+        iniciarCambioMensajes(); // Inicia el intervalo para los cambios automáticos
 
 
         // --- Script para el carrusel de la galería ---
@@ -302,7 +347,7 @@
 
         let currentIndex = 0;
         let itemsPerPage = getItemsPerPage(); 
-        const originalTotalItems = items.length; 
+        const originalTotalItems = items.length; // ¡AHORA CON MÁS IMÁGENES!
 
         function getItemsPerPage() {
             if (window.innerWidth <= 480) {
@@ -320,7 +365,9 @@
 
             // Clonar ítems del final y añadirlos al principio
             for (let i = 0; i < itemsPerPage; i++) {
-                const clone = items[originalTotalItems - 1 - i].cloneNode(true);
+                // Asegurarse de que el índice no exceda el límite de originalTotalItems
+                const cloneIndex = (originalTotalItems - 1 - i + originalTotalItems) % originalTotalItems;
+                const clone = items[cloneIndex].cloneNode(true);
                 clone.classList.add('clone');
                 galeriaInner.prepend(clone);
             }
