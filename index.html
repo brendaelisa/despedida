@@ -217,7 +217,7 @@
 </head>
 <body>
     <audio id="miMusica" loop hidden>
-        <source src="audio/1006 - En tu corazón entona una canción.mp3" type="audio/mpeg" />
+        <source src="audio/musica.mp3" type="audio/mpeg" />
         Tu navegador no soporta audio HTML5.
     </audio>
 
@@ -239,7 +239,7 @@
                 <div class="galeria-item"><img src="images/1.jpg" alt="Foto 1" /></div>
                 <div class="galeria-item"><img src="images/2.jpg" alt="Foto 2" /></div>
                 <div class="galeria-item"><img src="images/3.jpg" alt="Foto 3" /></div>
-                <div class="galeria-item"><img src="images/4.jpg" alt="Foto 4" /> /></div>
+                <div class="galeria-item"><img src="images/4.jpg" alt="Foto 4" /></div>
                 <div class="galeria-item"><img src="images/5.jpg" alt="Foto 5" /></div>
                 <div class="galeria-item"><img src="images/6.jpg" alt="Foto 6" /></div>
                 <div class="galeria-item"><img src="images/7.jpg" alt="Foto 7" /></div>
@@ -253,6 +253,7 @@
                 <div class="galeria-item"><img src="images/15.jpg" alt="Foto 15" /></div>
                 <div class="galeria-item"><img src="images/16.jpg" alt="Foto 16" /></div>
                 <div class="galeria-item"><img src="images/17.jpg" alt="Foto 17" /></div>
+                <div class="galeria-item"><img src="images/18.jpg" alt="Foto 18" /></div>
             </div>
             <button class="galeria-nav-button prev" id="prevBtn">❮</button>
             <button class="galeria-nav-button next" id="nextBtn">❯</button>
@@ -292,7 +293,16 @@
             Si había dudas que N.P.C. (Nuestro Padre Celestial) está preocupado por esta pequeña rama, fue una certeza que nos ama y se preocupa por nosotros. Mandó dos seres hermosos en humildad, conocimiento y amor. Por siempre estarán en mi corazón como ejemplo de hermandad con mucho amor.`,
 
             `<strong>Flia Torres:</strong><br>
-            Cada enseñanza, cada sonrisa, cada momento compartido quedará grabado en nuestra memoria. Han sido una luz en nuestro camino. Su trabajo aquí ha sido invaluable. Nos han mostrado el verdadero significado del servicio. ¡Esperamos verlos pronto y les deseamos un feliz reencuentro con sus seres queridos!`
+            Cada enseñanza, cada sonrisa, cada momento compartido quedará grabado en nuestra memoria. Han sido una luz en nuestro camino. Su trabajo aquí ha sido invaluable. Nos han mostrado el verdadero significado del servicio. ¡Esperamos verlos pronto y les deseamos un feliz reencuentro con sus seres queridos!`,
+            
+            `<strong>Flia Covino:</strong><br>
+           Felicidades por el final de su misión! Su dedicación y servicio a la obra del Señor han sido inspiradores para cada uno de nosotros. Les agradecemos su sacrificio, amor y compromiso con nuestra rama.
+Queremos expresarles cuánto hemos disfrutado compartiendo momentos con ustedes y lo mucho que significan en nuestras vidas. El fin de su mision nos llena de sentimientos encontrados: por un lado, nos alegra que puedan reunirse con sus seres queridos; por otro, nos entristece la idea de no tenerlos cerca.
+Que Dios los bendiga y los guíe en su regreso a casa. Que su experiencia misionera sea un testimonio de su fe y un recuerdo precioso para toda la vida.
+Les deseamos un viaje lleno de bendiciones y que esta nueva etapa esté llena de éxitos, felicidad y momentos inolvidables con su familia y amigos allá. Que la nostalgia se vea acompañada siempre de la certeza de que llevan en sus corazones un pedacito de nosotros y que aquí siempre tendrán un lugar especial.
+Gracias por todos los días compartidos, por su amistad, y por ser una familia tan bondadosa. Esperamos mantenernos en contacto y que en el futuro podamos reencontrarnos.
+
+Con mucho cariño: Familia Covino.`
         ];
 
         let indiceMensaje = 0;
@@ -414,11 +424,12 @@
         const galeriaInner = document.getElementById('galeriaInner');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
+        // Vuelve a obtener los items para incluir la nueva imagen
         const items = Array.from(document.querySelectorAll('.galeria-item')); 
 
         let currentIndex = 0;
         let itemsPerPage = getItemsPerPage(); 
-        const originalTotalItems = items.length; 
+        const originalTotalItems = items.length; // Cantidad de imágenes actualizada aquí
 
         function getItemsPerPage() {
             if (window.innerWidth <= 480) {
